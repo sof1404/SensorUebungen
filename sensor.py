@@ -136,6 +136,16 @@ def classify_value(value: float, limits: dict) -> str:
         'kritisch'
     """
     # TODO: Implementierung hier einfügen
+    def classify_value(value: float, limits: dict) -> str:
+        if value < limits["niedrig"]:
+            return "niedrig"
+        elif value < limits["normal"]:
+            return "normal"
+        elif value < limits["hoch"]:
+            return "hoch"
+        else:
+            return "kritisch"
+
     pass
 
 
@@ -157,6 +167,9 @@ def filter_by_sensor(data: list[dict], sensor_id: str) -> list[dict]:
         True
     """
     # TODO: Implementierung hier einfügen
+    def filter_by_sensor(data: list[dict], sensor_id: str) -> list[dict]:
+        return [entry for entry in data if entry["sensor_id"] == sensor_id]
+
     pass
 
 
@@ -190,5 +203,35 @@ def generate_report(data: list[dict]) -> str:
         ======================================
     """
     # TODO: Implementierung hier einfügen
+    temps = [d["temperature"] for d in data]
+
+    def generate_report(data: list[dict]) -> str:
+        temps = [d["temperature"] for d in data]
+    hums = [d["humidity"] for d in data]
+    co2s = [d["co2"] for d in data]
+    krit_temp = sum(1 for t in temps if t > 30)
+    sensoren = sorted({d["sensor_id"] for d in data})
+
+    report = []
+    report.append("========== SensorPy Bericht ==========")
+    report.append(f"Messungen total:       {len(data)}")
+    report.append(f"Sensoren:              {', '.join(sensoren)}")
+    report.append("")
+    report.append("-- Temperatur (°C) --")
+    report.append(f"Durchschnitt:          {sum(temps)/len(temps):.2f}")
+    report.append(f"Min / Max:             {min(temps):.1f} / {max(temps):.1f}")
+    report.append(f"Kritische Werte (>30): {krit_temp}")
+    report.append("")
+    report.append("-- Luftfeuchtigkeit (%) --")
+    report.append(f"Durchschnitt:          {sum(hums)/len(hums):.2f}")
+    report.append(f"Min / Max:             {min(hums):.1f} / {max(hums):.1f}")
+    report.append("")
+    report.append("-- CO2 (ppm) --")
+    report.append(f"Durchschnitt:          {sum(co2s)/len(co2s):.2f}")
+    report.append(f"Min / Max:             {min(co2s):.0f} / {max(co2s):.0f}")
+    report.append("======================================")
+
+    return "\n".join(report)
+
     pass
 
