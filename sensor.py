@@ -107,7 +107,7 @@ def count_above_threshold(values: list[float], threshold: float) -> int:
 # ──────────────────────────────────────────────────────────────
 
 def classify_value(value: float, limits: dict) -> str:
-    """Klassifiziert einen Messwert anhand von Grenzwerten.
+    """Klassifiziert einen Messwert anhand von Grenzwerten..
 
     Die limits-dict hat folgende Struktur:
         {
